@@ -84,4 +84,25 @@ class GenServerWorkerTest {
     assertEquals(reply, result)
     ()
   }
+  
+  @Test
+  def testGenCastMessagePassedOnToGenServerProperly() = {
+    val msg = "Hello there"
+    
+    doReturn(('noreply, Nil)).when(mockGenServer).do_handle_cast(Matchers.any(), Matchers.any())
+    testActor ! ('gen_cast, msg)
+    verify(mockGenServer).do_handle_cast(Matchers.eq(msg), Matchers.eq(Nil))
+    ()
+  }
+  
+  @Test
+  def testHandleCastWithNoReplyAndNewStateProperlyUpdatesState() = {
+    val newState = "State"
+    
+    doReturn(('noreply, newState)).when(mockGenServer).do_handle_cast(Matchers.any(), Matchers.any())
+    testActor ! ('gen_cast, "blah")
+    assertEquals(newState, underTest.state)
+    ()
+  }
+
 }

@@ -48,4 +48,7 @@ trait GenServer {
   
   def do_handle_call(msg: Any, from: ActorRef, state: Any): (Symbol, Any, Any) =
     handle_call((msg, from, state))
+    
+  def do_handle_cast(msg: Any, state: Any): (Symbol, Any) =
+    handle_cast((msg, state))
 }
