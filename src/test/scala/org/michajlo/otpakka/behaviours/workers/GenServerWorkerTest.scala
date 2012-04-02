@@ -86,6 +86,17 @@ class GenServerWorkerTest {
   }
   
   @Test
+  def testHandleCallWithStopShutsDown() = {
+    val reason = "why not"
+    val state = Nil
+    
+    doReturn(('stop, reason, state)).when(mockGenServer).do_handle_call(Matchers.any(), Matchers.any(), Matchers.any())
+    testActor ! ('gen_call, "blah")
+    verify(mockGenServer).do_terminate(Matchers.eq(reason), Matchers.eq(state))
+    assertTrue(testActor.isTerminated)
+  }
+  
+  @Test
   def testGenCastMessagePassedOnToGenServerProperly() = {
     val msg = "Hello there"
     
@@ -103,6 +114,16 @@ class GenServerWorkerTest {
     testActor ! ('gen_cast, "blah")
     assertEquals(newState, underTest.state)
     ()
+  }
+  
+  def testHandleCastWithStopShutsDown() = {
+    val reason = "why not"
+    val state = Nil
+    
+    doReturn(('stop, reason, state)).when(mockGenServer).do_handle_cast(Matchers.any(), Matchers.any())
+    testActor ! ('gen_cast, "blah")
+    verify(mockGenServer).do_terminate(Matchers.eq(reason), Matchers.eq(state))
+    assertTrue(testActor.isTerminated)
   }
   
   @Test
@@ -125,4 +146,13 @@ class GenServerWorkerTest {
     ()
   }
   
+  def testHandleInfoWithStopShutsDown() = {
+    val reason = "why not"
+    val state = Nil
+    
+    doReturn(('stop, reason, state)).when(mockGenServer).do_handle_info(Matchers.any(), Matchers.any())
+    testActor ! "blah"
+    verify(mockGenServer).do_terminate(Matchers.eq(reason), Matchers.eq(state))
+    assertTrue(testActor.isTerminated)
+  }
 }

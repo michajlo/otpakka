@@ -18,18 +18,28 @@ class GenServerWorker(val genServer: GenServer, args: List[Any]) extends Actor {
         case ('reply, reply, newState) =>
           state = newState
           sender ! reply
+        case ('stop, reason, newState) =>
+          state = newState
+          genServer.do_terminate(reason, newState)
+          context.stop(self)
       }
       
     case ('gen_cast, msg) =>
       genServer.do_handle_cast(msg, state) match {
         case ('noreply, newState) =>
           state = newState
+        case ('stop, reason, newState) =>
+          state = newState
+          genServer.do_terminate(reason, newState)
       }
       
     case any =>
       genServer.do_handle_info(any, state) match {
         case ('noreply, newState) =>
           state = newState
+        case ('stop, reason, newState) =>
+          state = newState
+          genServer.do_terminate(reason, newState)
       }
             
   }

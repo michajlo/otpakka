@@ -40,18 +40,23 @@ trait GenServer {
 
   def init(args: List[Any]): (Any, Any)
   
-  def handle_call: PartialFunction[(Any, ActorRef, Any), (Symbol, Any, Any)]
+  def handle_call: PartialFunction[(Any, ActorRef, Any), Any]
   
-  def handle_cast: PartialFunction[(Any, Any), (Symbol, Any)]
+  def handle_cast: PartialFunction[(Any, Any), Any]
   
-  def handle_info: PartialFunction[(Any, Any), (Symbol, Any)]
+  def handle_info: PartialFunction[(Any, Any), Any]
   
-  def do_handle_call(msg: Any, from: ActorRef, state: Any): (Symbol, Any, Any) =
+  def terminate: PartialFunction[(Any, Any), Unit]
+  
+  def do_handle_call(msg: Any, from: ActorRef, state: Any): Any =
     handle_call((msg, from, state))
     
-  def do_handle_cast(msg: Any, state: Any): (Symbol, Any) =
+  def do_handle_cast(msg: Any, state: Any): Any =
     handle_cast((msg, state))
     
-  def do_handle_info(msg: Any, state: Any): (Symbol, Any) =
+  def do_handle_info(msg: Any, state: Any): Any =
     handle_info((msg, state))
+    
+  def do_terminate(reason: Any, state: Any): Unit =
+    terminate((reason, state))
 }

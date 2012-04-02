@@ -35,4 +35,8 @@ class Counter extends GenServer {
     case (any, state) =>
       ('noreply, state)
   }
+  
+  def terminate = {
+    case any => ()
+  }
 }
