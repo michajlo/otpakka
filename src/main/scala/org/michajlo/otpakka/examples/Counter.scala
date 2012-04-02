@@ -30,4 +30,9 @@ class Counter extends GenServer {
     case ('increment, count: Int) =>
       ('noreply, count+1)
   }
+  
+  def handle_info = {
+    case (any, state) =>
+      ('noreply, state)
+  }
 }

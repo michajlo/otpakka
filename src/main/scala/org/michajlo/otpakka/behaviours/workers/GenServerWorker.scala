@@ -25,6 +25,12 @@ class GenServerWorker(val genServer: GenServer, args: List[Any]) extends Actor {
         case ('noreply, newState) =>
           state = newState
       }
+      
+    case any =>
+      genServer.handle_info(any, state) match {
+        case ('noreply, newState) =>
+          state = newState
+      }
             
   }
   

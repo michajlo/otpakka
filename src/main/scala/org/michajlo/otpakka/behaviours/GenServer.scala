@@ -43,4 +43,6 @@ trait GenServer {
   def handle_call: PartialFunction[(Any, ActorRef, Any), (Symbol, Any, Any)]
   
   def handle_cast: PartialFunction[(Any, Any), (Symbol, Any)]
+  
+  def handle_info: PartialFunction[(Any, Any), (Symbol, Any)]
 }
