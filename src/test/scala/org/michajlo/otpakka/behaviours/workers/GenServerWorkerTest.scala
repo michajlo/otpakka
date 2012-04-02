@@ -104,5 +104,25 @@ class GenServerWorkerTest {
     assertEquals(newState, underTest.state)
     ()
   }
-
+  
+  @Test
+  def testUnclassifiedMessagesArePassedToHandleInfo() = {
+    val msg = "Hello there"
+    
+    doReturn(('noreply, Nil)).when(mockGenServer).do_handle_info(Matchers.any(), Matchers.any())
+    testActor ! msg
+    verify(mockGenServer).do_handle_info(Matchers.eq(msg), Matchers.eq(Nil))
+    ()
+  } 
+  
+  @Test
+  def testHandleInfoWithNoReplyAndNewStateProperlyUpdatesState() = {
+    val newState = "State"
+    
+    doReturn(('noreply, newState)).when(mockGenServer).do_handle_info(Matchers.any(), Matchers.any())
+    testActor ! "blah"
+    assertEquals(newState, underTest.state)
+    ()
+  }
+  
 }

@@ -51,4 +51,7 @@ trait GenServer {
     
   def do_handle_cast(msg: Any, state: Any): (Symbol, Any) =
     handle_cast((msg, state))
+    
+  def do_handle_info(msg: Any, state: Any): (Symbol, Any) =
+    handle_info((msg, state))
 }
