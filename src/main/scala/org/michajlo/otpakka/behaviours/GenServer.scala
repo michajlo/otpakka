@@ -21,10 +21,8 @@ object GenServer {
     val instance =  cls.newInstance()
     as.actorOf(Props(new GenServerWorker(instance, args)), name=name)
   }
-  
-  def call(ref: ActorRef, msg: Any): Any = {
-    call(ref, msg, 5 seconds)
-  }
+    
+  def call(ref: ActorRef, msg: Any): Any =  call(ref, msg, 5 seconds)
   
   def call(ref: ActorRef, msg: Any, timeout: Timeout): Any = {
     try {
