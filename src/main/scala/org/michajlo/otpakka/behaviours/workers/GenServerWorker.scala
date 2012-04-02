@@ -14,7 +14,7 @@ class GenServerWorker(val genServer: GenServer, args: List[Any]) extends Actor {
   
   def receive = {
     case ('gen_call, msg) =>
-      genServer.handle_call((msg, sender, state)) match {
+      genServer.do_handle_call(msg, sender, state) match {
         case ('reply, reply, newState) =>
           state = newState
           sender ! reply
