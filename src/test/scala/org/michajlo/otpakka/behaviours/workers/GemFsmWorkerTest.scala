@@ -1,6 +1,7 @@
 package org.michajlo.otpakka.behaviours.workers
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -37,7 +38,6 @@ class GemFsmWorkerTest {
     mockGenFsm = mock(classOf[GenFsm])
     doReturn(('ok, state, stateData)).when(mockGenFsm).init(Matchers.any(classOf[List[Any]]))
     
-    
     testActor = TestActorRef(new GenFsmWorker(mockGenFsm, Nil))
     underTest = testActor.underlyingActor
   }
@@ -61,9 +61,25 @@ class GemFsmWorkerTest {
     val event = 'some_event
     
     doReturn(('next_state, nextState, nextStateData)).when(state).apply(Matchers.any(classOf[(Any, Any)]))
+    
     testActor ! ('gen_event, event)
-    verify(state).apply(Matchers.eq(event, stateData))
+    
+    verify(state).apply(Matchers.eq((event, stateData)))
     assertEquals(nextState, underTest.state)
     assertEquals(nextStateData, underTest.stateData)
+  }
+  
+  @Test
+  def testStateTransitionWithStopShutsDown() = {
+    val reason = "why not"
+    val newStateData = "a" :: Nil
+    val event = 'some_event
+    
+    doReturn(('stop, reason, newStateData)).when(state).apply(Matchers.any(classOf[(Any, Any)]))
+    
+    testActor ! ('gen_event, event)
+    
+    verify(mockGenFsm).do_terminate(Matchers.eq(reason), Matchers.eq(state), Matchers.eq(newStateData))
+    assertTrue(testActor.isTerminated)
   }
 }

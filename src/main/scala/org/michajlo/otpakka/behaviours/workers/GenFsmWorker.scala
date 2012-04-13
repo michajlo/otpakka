@@ -20,6 +20,10 @@ class GenFsmWorker(val genFsm: GenFsm, args: List[Any]) extends Actor {
         case ('next_state, newState: FsmState, newStateData) =>
           state = newState
           stateData = newStateData
+        case ('stop, reason, newStateData) =>
+          stateData = newStateData
+          genFsm.do_terminate(reason, state, newStateData)
+          context.stop(self)
       }
   }
 }

@@ -55,6 +55,7 @@ object GenFsm {
  * provided by the {@link GenFsm} object
  */
 trait GenFsm {
+  import GenFsm.FsmState
   
   /**
    * Initializer, called by {@link GenFsm#start} to create this instance.
@@ -65,5 +66,10 @@ trait GenFsm {
    *            with stateData as the state's data.  stateData is equivalent to state in {@link GenServer}
    *         ('error, reason: Any) on failure
    */
-    def init(args: List[Any]): Any
+  def init(args: List[Any]): Any
+   
+  def terminate: PartialFunction[(Any, FsmState, Any), Unit]
+  
+  def do_terminate(reason: Any, state: FsmState, stateData: Any): Unit =
+    terminate((reason, state, stateData))
 }
