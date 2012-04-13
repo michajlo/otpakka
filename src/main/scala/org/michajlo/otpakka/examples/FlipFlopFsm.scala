@@ -4,18 +4,21 @@ import org.michajlo.otpakka.behaviours.GenFsm.FsmState
 
 class FlipFlopFsm extends GenFsm {
 
-  def init(args: List[Any]) = ('ok, flip, 0)
+  // This isn't necessary, but it makes comparing functions
+  // easier and in turn testing much easier as well
+  val flipState = flip
+  val flopState = flop
+  
+  def init(args: List[Any]) = ('ok, flipState, 0)
   
   def flip: FsmState = {
     case ('change, stateData) =>
-      println("in flip")
-      ('next_state, flop, stateData)
+      ('next_state, flopState, stateData)
   }
   
   def flop: FsmState = {
     case ('change, stateData) =>
-      println("in flop")
-      ('next_state, flip, stateData)
+      ('next_state, flipState, stateData)
   }
   
   def terminate = {
