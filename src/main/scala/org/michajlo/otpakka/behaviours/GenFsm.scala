@@ -5,6 +5,8 @@ import akka.actor.Props
 import org.michajlo.otpakka.behaviours.workers.GenFsmWorker
 
 object GenFsm {
+  type FsmState = PartialFunction[(Any, Any), Any]
+  
   implicit val as: ActorSystem = ActorSystem("genfsm")
 
   def start[T <: GenFsm](cls: Class[T], args: List[Any]): ActorRef =
