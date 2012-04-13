@@ -20,7 +20,7 @@ object GenServer {
   /**
    * Create a new {@link GenServer} with the default name (name of the class)
    * 
-   * @param cls {@link Class} implementin {@link GenServer} to create
+   * @param cls {@link Class} implementing {@link GenServer} to create
    * @param args a List[Any] of arguments, passed to {@link GenServer#init}
    * 
    * @return an {@link ActorRef} for the created instance
