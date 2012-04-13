@@ -51,6 +51,11 @@
         </executions>
         <configuration>
           <scalaVersion>2.9.0</scalaVersion>
+          <args>
+            <arg>-unchecked</arg>
+            <arg>-deprecation</arg>
+            <arg>-explaintypes</arg>
+          </args>
         </configuration>
       </plugin>
       <plugin>
