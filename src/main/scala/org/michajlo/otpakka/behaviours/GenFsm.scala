@@ -9,7 +9,7 @@ import org.michajlo.otpakka.behaviours.workers.GenFsmWorker
  */
 object GenFsm {
   
-  type FsmState = PartialFunction[(Any, Any), Any]
+  type FsmState = PartialFunction[Any, Any]
 
   implicit val as: ActorSystem = ActorSystem("genfsm")
 
